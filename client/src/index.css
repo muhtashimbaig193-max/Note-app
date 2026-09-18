@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+:root {
+	--color-ink: #08060d;
+	--color-ink-900: #0e0a15;
+	--color-lilac-50: #f4efff;
+	--color-lilac-200: #c7bdcf;
+	--color-lilac-300: #b9a8c7;
+	--color-lilac-400: #988fa8;
+	--color-lilac-500: #766b80;
+	--color-lilac-600: #5e5368;
+	--color-violet-300: #d5a5ff;
+	--color-violet-400: #c774ff;
+	--color-violet-950: #120c1c;
+	--color-neon: #c774ff;
+	--shadow-neon: 0 0 8px rgba(198, 107, 255, 0.8);
+	--font-sans: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+@theme inline {
+	--color-ink: var(--color-ink);
+	--color-ink-900: var(--color-ink-900);
+	--color-lilac-50: var(--color-lilac-50);
+	--color-lilac-200: var(--color-lilac-200);
+	--color-lilac-300: var(--color-lilac-300);
+	--color-lilac-400: var(--color-lilac-400);
+	--color-lilac-500: var(--color-lilac-500);
+	--color-lilac-600: var(--color-lilac-600);
+	--color-violet-300: var(--color-violet-300);
+	--color-violet-400: var(--color-violet-400);
+	--color-violet-950: var(--color-violet-950);
+	--color-neon: var(--color-neon);
+	--shadow-neon: var(--shadow-neon);
+	--font-sans: var(--font-sans);
+}
