@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 const variantClasses = {
   primary:
     "border-violet-300 bg-violet-400 text-violet-950 shadow-[0_0_24px_rgba(199,116,255,0.22)] hover:bg-violet-300 hover:shadow-[0_0_34px_rgba(199,116,255,0.42)]",

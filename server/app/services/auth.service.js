@@ -18,7 +18,7 @@ export async function isEmailExist(email) {
   return false;
 }
 
-export async function createUser(fullname, email, password) {
+export async function createUser(fullname, email, password, role, location, aboutYou) {
   if (!fullname || !email || !password) {
     throw new Error("Invalid request. Please fill required data");
   }
@@ -36,6 +36,9 @@ export async function createUser(fullname, email, password) {
     fullname: fullname,
     email: email,
     password: hashedPassword,
+    role: role,
+    location: location,
+    aboutYou: aboutYou
   });
 
   if (!user) {
@@ -96,3 +99,5 @@ export async function findUserById(userId){
   return user;
 
 }
+
+// export async function updateUser(userId){}

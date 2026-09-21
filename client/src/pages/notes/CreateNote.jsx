@@ -15,6 +15,7 @@ import { createNote } from "../../api/note.api";
 import Swal from "sweetalert2";
 import { useNoteStore } from "../../store/note.store";
 import { useNavigate } from "react-router-dom";
+import Button from "../../components/ui/Button";
 
 const colorOptions = [
   {
@@ -71,62 +72,59 @@ const CreateNote = () => {
     reminder: "No reminder",
   });
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const response = await createNote({
-      ...formData,
-      tags: formData.tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean),
-    });
+    try {
+      const response = await createNote({
+        ...formData,
+        tags: formData.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+      });
 
-    Swal.fire({
-      icon: "success",
-      title: "Note Created!",
-      text:
-        response?.message ||
-        "Your note has been created successfully.",
-      showConfirmButton: true,
-      confirmButtonText: "View Note",
-      timer: 2000,
-      timerProgressBar: true,
-    });
+      Swal.fire({
+        icon: "success",
+        title: "Note Created!",
+        text: response?.message || "Your note has been created successfully.",
+        showConfirmButton: true,
+        confirmButtonText: "View Note",
+        timer: 2000,
+        timerProgressBar: true,
+      });
 
-    // Store the complete note returned by MongoDB
-    addNote({
-      ...response.note,
-      id: response.note._id,
-    });
+      // Store the complete note returned by MongoDB
+      addNote({
+        ...response.note,
+        id: response.note._id,
+      });
 
-    setFormData({
-      title: "",
-      description: "",
-      tags: "",
-      notebook: "Personal",
-      mood: "Focused",
-      color: "violet",
-      isPinned: false,
-      isFavourite: false,
-      reminder: "No reminder",
-    });
+      setFormData({
+        title: "",
+        description: "",
+        tags: "",
+        notebook: "Personal",
+        mood: "Focused",
+        color: "violet",
+        isPinned: false,
+        isFavourite: false,
+        reminder: "No reminder",
+      });
 
-    navigate("/notes/view-notes");
-  } catch (error) {
-    Swal.fire({
-      icon: "error",
-      title: "Failed to Create Note",
-      text:
-        error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong. Please try again.",
-      confirmButtonText: "Okay",
-    });
-  }
-};
-
+      navigate("/notes/view-notes");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed to Create Note",
+        text:
+          error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong. Please try again.",
+        confirmButtonText: "Okay",
+      });
+    }
+  };
 
   return (
     <main className="min-h-[calc(100vh-72px)] bg-ink font-sans text-lilac-50">
@@ -181,6 +179,7 @@ const handleSubmit = async (e) => {
                 />
               </div>
               <div className="flex flex-col gap-3 border-t border-violet-300/10 px-5 py-4 text-[10px] text-lilac-600 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+              <Button variant="secondary" link="/notes/view-notes">View Notes</Button>
                 <span className="flex items-center gap-1.5">
                   <Sparkles size={12} className="text-violet-300" /> Autosave is
                   on

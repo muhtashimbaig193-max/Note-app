@@ -1,5 +1,6 @@
 import {
   createNote,
+  delAllNotes,
   deleteNoteById,
   fetchAllNotes,
   fetchNoteById,
@@ -89,3 +90,8 @@ export const updateNote = catchAsync(async (req, res) => {
 
   return res.status(200).json({ message: "Note Updated Successfully", note });
 });
+
+export const deleteAllNotes = catchAsync(async (req, res) => {
+  const notes = await delAllNotes();
+  return notes
+})

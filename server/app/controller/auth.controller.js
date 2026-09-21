@@ -6,9 +6,9 @@ import {
 } from "../services/auth.service.js";
 
 export const register = catchAsync(async (req, res) => {
-  const { fullname, email, password } = req.body;
+  const { fullname, email, password, role, location, aboutYou } = req.body;
 
-  const user = await createUser(fullname, email, password);
+  const user = await createUser(fullname, email, password, role, location, aboutYou);
 
   return res.status(201).json({ message: "User created successfull" });
 });

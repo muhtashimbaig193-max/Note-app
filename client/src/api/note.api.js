@@ -23,3 +23,12 @@ export const deleteNoteById = async (id) => {
         console.error("Error In Deleting Note", error);
     }
 }
+
+export const delAllNotes = async () => {
+    try {
+        const response = await api.delete(`/note/delete`);
+        return response.data;
+    } catch (error) {
+        console.error("Error in deleting Notes", error)
+    }
+}

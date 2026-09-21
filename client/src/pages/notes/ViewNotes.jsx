@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { ArrowLeft, BookOpen, Search, Sparkles, Trash } from "lucide-react";
+import { ArrowLeft, BookOpen, LoaderCircle, Search, Sparkles, Trash } from "lucide-react";
 import { Link } from "react-router-dom";
 import NoteCard from "../../components/ui/NoteCard";
 import SelectedNote from "../../components/ui/SelectedNote";
 import { useNoteStore } from "../../store/note.store";
 import Swal from "sweetalert2";
+import { delAllNotes } from "../../api/note.api";
 
 const ViewNotes = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [activeFilter, setActiveFilter] = useState("all");
+  const [isDeleting, setIsDeleting] = useState(false);
   const fetchNotes = useNoteStore((state) => state?.notes);
   const allNotes = Array.isArray(fetchNotes) ? fetchNotes : [];
   const displayNotes = allNotes.filter((note) => {
@@ -32,25 +34,29 @@ const ViewNotes = () => {
         focusCancel: true,
       });
 
-      // User clicked Cancel
       if (!result.isConfirmed) {
         return;
       }
 
-      // Delete all notes from Zustand
-      await deleteAllNotes();
+      setIsDeleting(true);
+
+      // Delete notes from database
+      const response = await delAllNotes();
+
+      // Delete notes from Zustand
+      deleteAllNotes();
 
       await Swal.fire({
         icon: "success",
         title: "Deleted!",
-        text: "All notes have been deleted successfully.",
+        text: response?.message || "All notes have been deleted successfully.",
         timer: 1500,
         showConfirmButton: false,
       });
     } catch (error) {
       console.error("Delete all notes error:", error);
 
-      Swal.fire({
+      await Swal.fire({
         icon: "error",
         title: "Delete Failed",
         text:
@@ -58,6 +64,8 @@ const ViewNotes = () => {
           error?.message ||
           "Something went wrong while deleting all notes.",
       });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -166,10 +174,16 @@ const ViewNotes = () => {
             <button
               type="button"
               onClick={handleDeleteAllNotes}
+              disabled={isDeleting}
               className="ml-auto flex items-center gap-2 rounded-full border border-red-300/20 bg-red-400/5 px-3 py-1.5 text-red-400 transition hover:border-red-300/40 hover:bg-red-400/10 hover:text-red-300"
             >
-              <Trash size={14} />
-              Delete All Notes
+              {isDeleting ? (
+                <LoaderCircle size={14} className="animate-spin" />
+              ) : (
+                <Trash size={14} />
+              )}
+
+              {isDeleting ? "Deleting..." : "Delete All Notes"}
             </button>
           ) : (
             ""

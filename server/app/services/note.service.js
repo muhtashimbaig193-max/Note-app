@@ -56,8 +56,11 @@ export async function fetchNoteById(noteId) {
 }
 
 
-export async function deleteALlNotes() {}
+export async function delAllNotes() {
+  const result = await Note.deleteMany({});
 
+  return result;
+}
 
 export async function deleteNoteById(noteId) {
   if(!noteId){

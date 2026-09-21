@@ -31,6 +31,11 @@ const hexToRgba = (hex, alpha = 1) => {
 
   const numeric = Number.parseInt(fullHex, 16);
 
+  // Invalid hex value
+  if (Number.isNaN(numeric)) {
+    return `rgba(139, 92, 246, ${alpha})`;
+  }
+
   const r = (numeric >> 16) & 255;
   const g = (numeric >> 8) & 255;
   const b = numeric & 255;
@@ -38,34 +43,50 @@ const hexToRgba = (hex, alpha = 1) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-const NoteCard = ({ notes = [], selectedIndex = 0, onSelect }) => {
-  // Make sure notes is always an array
+const NoteCard = ({
+  notes = [],
+  selectedIndex = 0,
+  onSelect,
+}) => {
   const noteList = Array.isArray(notes) ? notes : [];
 
   const sortedNotes = [...noteList].sort((a, b) => {
-    return Number(b?.isPinned === true) - Number(a?.isPinned === true);
+    return (
+      Number(b?.isPinned === true) -
+      Number(a?.isPinned === true)
+    );
   });
 
   return (
     <aside className="space-y-4">
       {sortedNotes.length > 0 ? (
-        sortedNotes.map((note, index) => {
-          const descriptionText = getTextFromTipTap(note?.description);
+        sortedNotes.map((note) => {
+          const descriptionText = getTextFromTipTap(
+            note?.description
+          );
 
-          const isSelected = index === selectedIndex;
+          // Find the original index before sorting
+          const originalIndex = noteList.findIndex(
+            (item) => item?._id === note?._id
+          );
+
+          const isSelected = originalIndex === selectedIndex;
 
           const color = note?.color || "#8B5CF6";
 
           return (
             <div
-              key={note?._id || index}
-              onClick={() => onSelect?.(index)}
+              key={note?._id || originalIndex}
+              onClick={() => onSelect?.(originalIndex)}
               role="button"
               tabIndex={0}
               onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
+                if (
+                  event.key === "Enter" ||
+                  event.key === " "
+                ) {
                   event.preventDefault();
-                  onSelect?.(index);
+                  onSelect?.(originalIndex);
                 }
               }}
               className={`w-full rounded-2xl border p-4 text-left transition-all duration-200 ${
@@ -78,7 +99,10 @@ const NoteCard = ({ notes = [], selectedIndex = 0, onSelect }) => {
                 borderColor: color,
                 background: `linear-gradient(
                   135deg,
-                  ${hexToRgba(color, isSelected ? 0.2 : 0.16)},
+                  ${hexToRgba(
+                    color,
+                    isSelected ? 0.2 : 0.16
+                  )},
                   rgba(13, 18, 33, 0.92)
                 )`,
                 boxShadow: isSelected
@@ -100,7 +124,7 @@ const NoteCard = ({ notes = [], selectedIndex = 0, onSelect }) => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  {note?.isFavourite ? (
+                  {note?.isFavourite && (
                     <span
                       className="rounded-full border p-1"
                       style={{
@@ -109,12 +133,19 @@ const NoteCard = ({ notes = [], selectedIndex = 0, onSelect }) => {
                         color,
                       }}
                     >
-                      <Star size={12} fill="currentColor" />
+                      <Star
+                        size={12}
+                        fill="currentColor"
+                      />
                     </span>
-                  ) : null}
+                  )}
 
                   {note?.isPinned ? (
-                    <Pin size={15} className="rotate-45" style={{ color }} />
+                    <Pin
+                      size={15}
+                      className="rotate-45"
+                      style={{ color }}
+                    />
                   ) : (
                     <span className="text-[10px] uppercase tracking-[0.18em] text-lilac-600">
                       {note?.category || "Note"}
@@ -148,20 +179,26 @@ const NoteCard = ({ notes = [], selectedIndex = 0, onSelect }) => {
 
               {/* Description */}
               <p className="mt-3 line-clamp-3 text-sm leading-6 text-lilac-400">
-                {descriptionText || note?.preview || "No description"}
+                {descriptionText ||
+                  note?.preview ||
+                  "No description"}
               </p>
 
               {/* Date / Tags */}
               <div className="mt-4 flex items-center justify-between text-[10px] text-lilac-600">
                 <span>
                   {note?.createdAt
-                    ? new Date(note.createdAt).toLocaleDateString()
+                    ? new Date(
+                        note.createdAt
+                      ).toLocaleDateString()
                     : "Just now"}
                 </span>
 
                 <span className="flex items-center gap-1">
                   <Tag size={12} />
-                  {Array.isArray(note?.tags) ? note.tags.length : 0}
+                  {Array.isArray(note?.tags)
+                    ? note.tags.length
+                    : 0}
                 </span>
               </div>
 
@@ -172,7 +209,9 @@ const NoteCard = ({ notes = [], selectedIndex = 0, onSelect }) => {
                   {note?.notebook || "General"}
                 </span>
 
-                <span>{note?.wordCount || 0} words</span>
+                <span>
+                  {note?.wordCount || 0} words
+                </span>
               </div>
             </div>
           );
