@@ -31,3 +31,12 @@ export const me = async () => {
     throw error;
   }
 }
+
+export const updateUser = async (userId, data) => {
+  try {
+    const response = await api.patch(`/auth/edit/${userId}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error in Updating User" , error.message)
+  }
+}

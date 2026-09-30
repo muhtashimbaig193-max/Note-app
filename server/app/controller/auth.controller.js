@@ -3,12 +3,20 @@ import {
   createUser,
   findUserById,
   loginUser,
+  updateUser,
 } from "../services/auth.service.js";
 
 export const register = catchAsync(async (req, res) => {
   const { fullname, email, password, role, location, aboutYou } = req.body;
 
-  const user = await createUser(fullname, email, password, role, location, aboutYou);
+  const user = await createUser(
+    fullname,
+    email,
+    password,
+    role,
+    location,
+    aboutYou,
+  );
 
   return res.status(201).json({ message: "User created successfull" });
 });
@@ -38,4 +46,20 @@ export const me = catchAsync(async (req, res) => {
   const user = await findUserById(id);
 
   return res.status(200).json(user);
+});
+
+export const updateUserDetails = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+
+  const { fullname, email, role, location, aboutYou } = req.body;
+
+  const user = await updateUser(userId, {
+    fullname,
+    email,
+    role,
+    location,
+    aboutYou,
+  });
+
+  return res.status(200).json({ message: "User Updated Successfully", user})
 });

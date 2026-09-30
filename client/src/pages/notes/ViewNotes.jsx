@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { ArrowLeft, BookOpen, LoaderCircle, Search, Sparkles, Trash } from "lucide-react";
+import {
+  ArrowLeft,
+  BookOpen,
+  LoaderCircle,
+  Search,
+  Sparkles,
+  Trash,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import NoteCard from "../../components/ui/NoteCard";
 import SelectedNote from "../../components/ui/SelectedNote";

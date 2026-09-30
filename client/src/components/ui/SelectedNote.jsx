@@ -41,9 +41,8 @@ const hexToRgba = (hex, alpha = 1) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-
 const getTextFromTipTap = (node) => {
-  if (!node) {
+  if (!node) { 
     return "";
   }
 
@@ -52,10 +51,7 @@ const getTextFromTipTap = (node) => {
   }
 
   if (Array.isArray(node.content)) {
-    return node.content
-      .map(getTextFromTipTap)
-      .filter(Boolean)
-      .join(" ");
+    return node.content.map(getTextFromTipTap).filter(Boolean).join(" ");
   }
 
   return "";
@@ -63,9 +59,7 @@ const getTextFromTipTap = (node) => {
 
 const SelectedNote = ({ selectedNote = null }) => {
   const navigate = useNavigate();
-  const deleteNote = useNoteStore(
-    (state) => state.deleteNote
-  );
+  const deleteNote = useNoteStore((state) => state.deleteNote);
 
   const [isActionsOpen, setIsActionsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -86,16 +80,12 @@ const SelectedNote = ({ selectedNote = null }) => {
   /*
     Your backend uses tags as an array.
   */
-  const tags = Array.isArray(selectedNote?.tags)
-    ? selectedNote.tags
-    : [];
+  const tags = Array.isArray(selectedNote?.tags) ? selectedNote.tags : [];
 
   /*
     Your note description is TipTap JSON.
   */
-  const descriptionText = getTextFromTipTap(
-    selectedNote?.description
-  );
+  const descriptionText = getTextFromTipTap(selectedNote?.description);
 
   /*
     Delete note
@@ -143,9 +133,7 @@ const SelectedNote = ({ selectedNote = null }) => {
       await Swal.fire({
         icon: "success",
         title: "Deleted!",
-        text:
-          response?.message ||
-          "Note deleted successfully.",
+        text: response?.message || "Note deleted successfully.",
         timer: 1500,
         showConfirmButton: false,
       });
@@ -179,11 +167,11 @@ const SelectedNote = ({ selectedNote = null }) => {
     >
       {/* Header */}
       <div className="mb-8 flex flex-col gap-4 border-b border-violet-300/10 pb-5 sm:flex-row sm:items-center sm:justify-between">
-        <div>
+        <div>   
           {/* Category / Status */}
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-violet-300">
-              {selectedNote?.category || "Note"}
+              {selectedNote?.category || "Note"} 
             </p>
 
             {selectedNote?.isPinned ? (
@@ -195,14 +183,11 @@ const SelectedNote = ({ selectedNote = null }) => {
                   color,
                 }}
               >
-                <Pin
-                  size={10}
-                  className="rotate-45"
-                />
+                <Pin size={10} className="rotate-45" />
                 pinned
               </span>
             ) : null}
-
+  
             {selectedNote?.isFavourite ? (
               <span
                 className="inline-flex items-center gap-1 rounded-full border px-2 py-1 text-[10px] uppercase tracking-[0.18em]"
@@ -212,10 +197,7 @@ const SelectedNote = ({ selectedNote = null }) => {
                   color,
                 }}
               >
-                <Star
-                  size={10}
-                  fill="currentColor"
-                />
+                <Star size={10} fill="currentColor" />
                 favorite
               </span>
             ) : null}
@@ -231,9 +213,7 @@ const SelectedNote = ({ selectedNote = null }) => {
         <div className="relative flex items-center gap-2 text-[11px] text-lilac-500">
           <span>
             {selectedNote?.createdAt
-              ? new Date(
-                  selectedNote.createdAt
-                ).toLocaleDateString()
+              ? new Date(selectedNote.createdAt).toLocaleDateString()
               : "Just now"}
           </span>
 
@@ -241,11 +221,7 @@ const SelectedNote = ({ selectedNote = null }) => {
             type="button"
             aria-label="Toggle note actions"
             aria-expanded={isActionsOpen}
-            onClick={() =>
-              setIsActionsOpen(
-                (isOpen) => !isOpen
-              )
-            }
+            onClick={() => setIsActionsOpen((isOpen) => !isOpen)}
             className="rounded-lg p-1.5 text-lilac-400 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-violet-300/50"
           >
             <MoreHorizontal size={17} />
@@ -277,9 +253,7 @@ const SelectedNote = ({ selectedNote = null }) => {
               >
                 <Trash2 size={14} />
 
-                {isDeleting
-                  ? "Deleting..."
-                  : "Delete note"}
+                {isDeleting ? "Deleting..." : "Delete note"}
               </button>
             </div>
           ) : null}
@@ -307,15 +281,9 @@ const SelectedNote = ({ selectedNote = null }) => {
           descriptionText
             .split(/\n+/)
             .filter(Boolean)
-            .map((paragraph, index) => (
-              <p key={index}>
-                {paragraph}
-              </p>
-            ))
+            .map((paragraph, index) => <p key={index}>{paragraph}</p>)
         ) : (
-          <p className="text-lilac-500">
-            No description available.
-          </p>
+          <p className="text-lilac-500">No description available.</p>
         )}
       </div>
 
@@ -359,8 +327,7 @@ const SelectedNote = ({ selectedNote = null }) => {
           </p>
 
           <p className="mt-2 text-sm font-semibold text-white">
-            {selectedNote?.reminder ||
-              "No reminder"}
+            {selectedNote?.reminder || "No reminder"}
           </p>
         </div>
       </div>
@@ -368,11 +335,7 @@ const SelectedNote = ({ selectedNote = null }) => {
       {/* Tags */}
       <div className="mt-8 border-t border-violet-300/10 pt-5">
         <div className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-lilac-600">
-          <Hash
-            size={12}
-            className="text-violet-300"
-          />
-
+          <Hash size={12} className="text-violet-300" />
           Tags
         </div>
 
@@ -387,9 +350,7 @@ const SelectedNote = ({ selectedNote = null }) => {
               </span>
             ))
           ) : (
-            <span className="text-xs text-lilac-600">
-              No tags
-            </span>
+            <span className="text-xs text-lilac-600">No tags</span>
           )}
         </div>
       </div>
@@ -397,20 +358,12 @@ const SelectedNote = ({ selectedNote = null }) => {
       {/* Footer */}
       <div className="mt-6 flex items-center justify-between border-t border-violet-300/10 pt-4 text-[10px] uppercase tracking-[0.18em] text-lilac-500">
         <span className="inline-flex items-center gap-2">
-          <BellRing
-            size={12}
-            className="text-violet-300"
-          />
-
-          reminder
+          <BellRing size={12} className="text-violet-300" />
+          {selectedNote.reminder || ""}
         </span>
 
         <span className="inline-flex items-center gap-2">
-          <Sparkles
-            size={12}
-            className="text-violet-300"
-          />
-
+          <Sparkles size={12} className="text-violet-300" />
           theme
         </span>
       </div>

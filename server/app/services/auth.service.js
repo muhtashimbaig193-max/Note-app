@@ -100,4 +100,20 @@ export async function findUserById(userId){
 
 }
 
-// export async function updateUser(userId){}
+export async function updateUser(userId, updates){
+ 
+  if(!userId){
+    return new AppError(404, "UserId Not Found")
+  };
+  
+  const user = await User.findByIdAndUpdate(userId, updates, {
+    new: true,
+    runValidators: true
+  })
+
+  if(!user){
+    return new AppError(404, "User Not Found")
+  }
+
+  return user;
+}
